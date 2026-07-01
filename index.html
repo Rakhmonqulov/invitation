@@ -63,7 +63,8 @@
     .pages {
       position: relative;
       width: 100%;
-      height: 700px;
+      height: 92vh;
+      max-height: 700px;
       border-radius: 6px;
       box-shadow: 0 25px 60px -15px rgba(0, 0, 0, .55), 0 0 0 1px rgba(201, 162, 90, .25);
     }
@@ -860,29 +861,42 @@
       line-height: 1.6;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width:768px) {
 
       .book {
         width: 95vw;
+        height: auto;
+      }
+
+      .pages {
         height: 92vh;
+        min-height: 650px;
       }
 
-      .page {
-        padding: 18px;
+      .page-inner {
+        padding: 20px 16px;
       }
 
-      h1 {
-        font-size: 42px;
+      h1.names {
+        font-size: 24px;
+      }
+
+      .lead {
+        font-size: 16px;
       }
 
       .countdown {
-        gap: 8px;
+        gap: 6px;
       }
 
-      .music-btn {
-        width: 90%;
+      .music-toggle {
+        width: 100%;
+        justify-content: center;
       }
 
+      .actions {
+        margin-top: 10px;
+      }
     }
   </style>
 </head>
@@ -1101,83 +1115,7 @@
           </div>
         </section>
 
-        <!-- PAGE 3 — DETAILS / PROGRAM -->
-        <section class="page" data-page="2">
-          <div class="page-inner">
-            <div class="frame"></div>
-            <div class="corner tl"><svg viewBox="0 0 46 46">
-                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
-                <path d="M2 16 a14 14 0 0 1 14-14" />
-              </svg></div>
-            <div class="corner tr"><svg viewBox="0 0 46 46">
-                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
-                <path d="M2 16 a14 14 0 0 1 14-14" />
-              </svg></div>
-            <div class="corner bl"><svg viewBox="0 0 46 46">
-                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
-                <path d="M2 16 a14 14 0 0 1 14-14" />
-              </svg></div>
-            <div class="corner br"><svg viewBox="0 0 46 46">
-                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
-                <path d="M2 16 a14 14 0 0 1 14-14" />
-              </svg></div>
-
-            <div style="margin-top:30px; width:100%;">
-              <div class="eyebrow" style="margin-bottom:6px;">Marosim tafsilotlari</div>
-              <h1 class="names" style="font-size:24px;">To'y dasturi</h1>
-
-              <div class="detail-card">
-                <div class="detail-row">
-                  <div class="detail-icon"><svg viewBox="0 0 24 24">
-                      <rect x="3" y="5" width="18" height="16" rx="2" />
-                      <path d="M3 10h18M8 3v4M16 3v4" />
-                    </svg></div>
-                  <div class="detail-text">
-                    <div class="label">Sana</div>
-                    <div class="value">01-avgust 2026-yil</div>
-                  </div>
-                </div>
-                <div class="detail-row">
-                  <div class="detail-icon"><svg viewBox="0 0 24 24">
-                      <circle cx="12" cy="12" r="9" />
-                      <path d="M12 7v5l3 2" />
-                    </svg></div>
-                  <div class="detail-text">
-                    <div class="label">Vaqt</div>
-                    <div class="value">soat 19:00 da</div>
-                  </div>
-                </div>
-                <div class="detail-row">
-                  <div class="detail-icon"><svg viewBox="0 0 24 24">
-                      <path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z" />
-                      <circle cx="12" cy="10" r="2.5" />
-                    </svg></div>
-                  <div class="detail-text">
-                    <div class="label">Manzil</div>
-                    <div class="value">AslNur to'yxonasi, Xatirchi tumani</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="divider" style="margin:18px auto 8px;">
-                <svg viewBox="0 0 24 24">
-                  <path d="M12 0l2.5 8.5L23 11l-8.5 2.5L12 22l-2.5-8.5L1 11l8.5-2.5z" />
-                </svg>
-              </div>
-
-              <div class="timeline">
-                <div class="tl-item"><span class="tl-time">___</span><span>Mehmonlarni kutib olish</span></div>
-                <div class="tl-item"><span class="tl-time">___</span><span>Nikoh marosimi</span></div>
-                <div class="tl-item"><span class="tl-time">___</span><span>Kelin-kuyov sharafiga tabriklar</span></div>
-                <div class="tl-item"><span class="tl-time">___</span><span>To'y dasturi va ziyofat</span></div>
-              </div>
-            </div>
-
-            <div class="page-foot">3 / 4</div>
-          </div>
-        </section>
-
-        <!-- PAGE 4 — LOCATION / CLOSING -->
+        <!-- PAGE 3 — LOCATION / CLOSING -->
         <section class="page" data-page="3">
           <div class="page-inner">
             <div class="frame"></div>
@@ -1266,7 +1204,7 @@
               <div class="signature">Ro'ziyevlar &amp; Qurbonovlar oilasi</div>
             </div>
 
-            <div class="page-foot">4 / 4</div>
+            <div class="page-foot">3 / 3</div>
           </div>
         </section>
 
