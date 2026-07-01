@@ -1,574 +1,1274 @@
 <!DOCTYPE html>
 <html lang="uz">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To'y taklifnomasi · Raximjon & Charos</title>
+  <title>To'y taklifnomasi</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Marcellus&family=Amiri:wght@400;700&family=Scheherazade+New:wght@500;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Marcellus&family=Amiri:wght@400;700&family=Scheherazade+New:wght@500;700&display=swap"
+    rel="stylesheet">
   <style>
+    :root {
+      --olive-deep: #3c4a23;
+      --olive: #5c6b35;
+      --olive-soft: #8a9a5e;
+      --sage: #aab98a;
+      --cream: #f6f2e4;
+      --cream-2: #efe8d4;
+      --gold: #c9a25a;
+      --gold-soft: #dcc28a;
+      --ink: #2c3318;
+      --line: rgba(60, 74, 35, .35);
+    }
+
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
     }
 
+    html,
     body {
-      background: radial-gradient(circle at 20% 30%, #2d3a1f, #1f2915);
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(180deg, #2a3318, #3c4a23 18%, #2a3318 100%);
       font-family: 'Cormorant Garamond', serif;
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ===== BOOK SHELL ===== */
+    .book-wrap {
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 20px 12px;
+      justify-content: flex-start;
+      padding: 28px 12px 90px;
     }
 
-    .book-container {
-      width: 100%;
-      max-width: 520px;
-      margin: 0 auto;
-    }
-
-    /* ---- Kitob qobig'i ---- */
     .book {
       position: relative;
-      aspect-ratio: 3 / 4.6;
-      perspective: 2800px;
-      border-radius: 12px;
-      box-shadow: 0 30px 60px -20px rgba(0,0,0,0.8), 0 0 0 1px rgba(201, 162, 90, 0.3);
+      width: 100%;
+      max-width: 480px;
+      aspect-ratio: 3/4.6;
+      perspective: 2400px;
     }
 
     .pages {
       position: relative;
       width: 100%;
       height: 100%;
-      border-radius: 12px;
-      background: #f4efe0;
-      overflow: hidden;
+      border-radius: 6px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, .55), 0 0 0 1px rgba(201, 162, 90, .25);
     }
 
     .page {
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at 50% 10%, rgba(255, 247, 230, 0.7), #f4efe0 75%);
-      border-radius: 12px;
-      padding: 28px 22px;
-      display: flex;
-      flex-direction: column;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, .5), transparent 55%),
+        var(--cream);
+      border-radius: 6px;
+      overflow: hidden;
       opacity: 0;
       visibility: hidden;
-      transform: rotateY(8deg) scale(0.96);
-      transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1), transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), visibility 0s linear 0.7s;
-      overflow-y: auto;
+      transform: translateX(24px);
+      transition: opacity .65s ease, transform .65s ease, visibility 0s linear .65s;
     }
 
     .page.active {
       opacity: 1;
       visibility: visible;
-      transform: rotateY(0deg) scale(1);
-      transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1), transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), visibility 0s linear 0s;
-      z-index: 5;
+      transform: translateX(0);
+      transition: opacity .65s ease, transform .65s ease, visibility 0s linear 0s;
+      z-index: 2;
     }
 
-    /* ---- bezak ramkalar ---- */
-    .frame-ornament {
-      position: absolute;
-      inset: 14px;
-      border: 1px solid rgba(201, 162, 90, 0.3);
-      border-radius: 6px;
-      pointer-events: none;
-    }
-    .frame-ornament::before,
-    .frame-ornament::after {
-      content: '';
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      border: 1px solid #c9a25a;
-      opacity: 0.6;
-    }
-    .frame-ornament::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
-    .frame-ornament::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
-
-    .corner-svg {
-      position: absolute;
-      width: 48px;
-      height: 48px;
-      opacity: 0.7;
-    }
-    .corner-svg svg { fill: none; stroke: #c9a25a; stroke-width: 1.2; }
-    .corner-svg.tl { top: 8px; left: 8px; }
-    .corner-svg.tr { top: 8px; right: 8px; transform: scaleX(-1); }
-    .corner-svg.bl { bottom: 8px; left: 8px; transform: scaleY(-1); }
-    .corner-svg.br { bottom: 8px; right: 8px; transform: scale(-1, -1); }
-
-    /* ---- yulduzchalar ---- */
-    .star-float {
-      position: absolute;
-      color: #dcc28a;
-      opacity: 0.5;
-      animation: floatStar 7s ease-in-out infinite;
-    }
-    @keyframes floatStar {
-      0%, 100% { transform: translateY(0) scale(0.9); opacity: 0.4; }
-      50% { transform: translateY(-12px) scale(1.2); opacity: 0.9; }
-    }
-
-    /* ---- yarim oy ---- */
-    .moon-badge {
+    .page-inner {
       position: relative;
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 12px;
-      filter: drop-shadow(0 0 18px rgba(201, 162, 90, 0.5));
-      animation: moonGlow 4s ease-in-out infinite;
-    }
-    @keyframes moonGlow {
-      0%, 100% { filter: drop-shadow(0 0 8px rgba(201, 162, 90, 0.4)); }
-      50% { filter: drop-shadow(0 0 28px rgba(201, 162, 90, 0.9)); }
-    }
-
-    .twinkle-star {
-      transform-origin: center;
-      animation: twinkle 2.8s ease-in-out infinite;
-    }
-    .twinkle-star:nth-child(2) { animation-delay: 0.7s; }
-    .twinkle-star:nth-child(3) { animation-delay: 1.6s; }
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.2; transform: scale(0.7); }
-      50% { opacity: 1; transform: scale(1.2); }
-    }
-
-    /* ---- tipografiya ---- */
-    .eyebrow {
-      font-family: 'Amiri', serif;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      font-size: 12px;
-      color: #5c6b35;
-      margin: 4px 0 10px;
-    }
-    .arabic {
-      font-family: 'Scheherazade New', serif;
-      font-size: 24px;
-      color: #3c4a23;
-      line-height: 1.5;
-    }
-    .names-main {
-      font-family: 'Marcellus', serif;
-      font-size: 34px;
-      line-height: 1.2;
-      color: #2c3318;
-      margin: 4px 0;
-    }
-    .ampersand {
-      display: block;
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 22px;
-      color: #c9a25a;
-      margin: 2px 0;
-    }
-    .subhead {
-      font-size: 15px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: #5c6b35;
-      margin: 8px 0 2px;
-    }
-    .divider-gold {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      width: 60%;
-      margin: 16px auto;
-      color: #c9a25a;
-    }
-    .divider-gold::before,
-    .divider-gold::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, #dcc28a, transparent);
-    }
-    .divider-gold svg { width: 18px; height: 18px; fill: #c9a25a; flex-shrink: 0; }
-
-    .invite-text {
-      font-size: 17.5px;
-      line-height: 1.7;
-      color: #2c3318;
-      max-width: 340px;
-      margin: 0 auto;
-    }
-    .invite-text em { color: #3c4a23; font-style: italic; }
-
-    /* ---- detallar ---- */
-    .detail-grid {
+      width: 100%;
+      height: 100%;
+      padding: 30px 24px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      width: 100%;
-      margin-top: 8px;
-    }
-    .detail-item {
-      display: flex;
       align-items: center;
-      gap: 14px;
-      background: rgba(255, 248, 235, 0.5);
-      padding: 12px 16px;
-      border-radius: 10px;
-      border: 1px solid rgba(201, 162, 90, 0.2);
-      backdrop-filter: blur(2px);
-    }
-    .detail-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(201, 162, 90, 0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .detail-icon svg { width: 18px; height: 18px; stroke: #3c4a23; stroke-width: 1.5; fill: none; }
-    .detail-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #5c6b35; }
-    .detail-value { font-size: 17px; color: #2c3318; line-height: 1.3; }
-
-    .timeline {
-      width: 100%;
-      margin-top: 12px;
-      text-align: left;
-    }
-    .tl-row {
-      display: flex;
-      gap: 14px;
-      padding: 8px 0;
-      border-bottom: 1px dashed rgba(201, 162, 90, 0.3);
-      font-size: 15px;
-    }
-    .tl-row:last-child { border-bottom: none; }
-    .tl-time { color: #c9a25a; font-weight: 600; min-width: 54px; }
-
-    /* ---- tugmalar ---- */
-    .btn-map {
-      display: inline-block;
-      padding: 10px 18px;
-      border-radius: 30px;
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 500;
-      text-decoration: none;
-      font-size: 15px;
-      letter-spacing: 0.04em;
-      transition: 0.25s ease;
-      border: 1px solid transparent;
-      margin: 4px 6px;
-    }
-    .btn-map.google { background: #4285F4; color: #fff; }
-    .btn-map.google:hover { background: #2b6ed7; transform: translateY(-2px); }
-    .btn-map.yandex { background: #ffd500; color: #222; }
-    .btn-map.yandex:hover { background: #f0c400; transform: translateY(-2px); }
-
-    /* ---- musiqa ---- */
-    .music-wrap {
-      margin-top: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 20px 8px 16px;
-      border-radius: 40px;
-      border: 1px solid rgba(201, 162, 90, 0.4);
-      background: rgba(201, 162, 90, 0.06);
-      cursor: pointer;
-      transition: 0.2s;
-      font-size: 13px;
-      letter-spacing: 0.06em;
-      color: #3c4a23;
-    }
-    .music-wrap:hover { background: rgba(201, 162, 90, 0.15); transform: translateY(-2px); }
-    .music-wrap svg { width: 18px; height: 18px; fill: #c9a25a; flex-shrink: 0; }
-    .bars {
-      display: flex;
-      align-items: flex-end;
-      gap: 2.5px;
-      height: 16px;
-    }
-    .bars span {
-      width: 3px;
-      background: #c9a25a;
-      border-radius: 2px;
-      height: 4px;
-      animation: barAnim 1s ease-in-out infinite;
-    }
-    .bars span:nth-child(1) { animation-delay: 0s; }
-    .bars span:nth-child(2) { animation-delay: 0.2s; }
-    .bars span:nth-child(3) { animation-delay: 0.4s; }
-    .bars span:nth-child(4) { animation-delay: 0.6s; }
-    .bars.paused span { animation-play-state: paused; height: 4px; }
-    @keyframes barAnim {
-      0%, 100% { height: 4px; }
-      50% { height: 16px; }
-    }
-
-    /* ---- navigatsiya ---- */
-    .nav-dots {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 22px;
-    }
-    .nav-dots button {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      border: 1px solid #c9a25a;
-      background: transparent;
-      cursor: pointer;
-      transition: 0.2s;
-      padding: 0;
-    }
-    .nav-dots button.active { background: #c9a25a; border-color: #c9a25a; }
-    .nav-dots button:hover { transform: scale(1.2); }
-
-    .arrow-nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 1px solid rgba(201, 162, 90, 0.3);
-      background: rgba(246, 242, 228, 0.85);
-      color: #3c4a23;
-      font-size: 20px;
-      cursor: pointer;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: 0.2s;
-      backdrop-filter: blur(4px);
-    }
-    .arrow-nav:hover { background: #fff; border-color: #c9a25a; }
-    .arrow-nav.prev { left: -48px; }
-    .arrow-nav.next { right: -48px; }
-    .arrow-nav[disabled] { opacity: 0.2; pointer-events: none; }
-
-    @media (max-width: 600px) {
-      .arrow-nav { display: none; }
-      .page { padding: 20px 16px; }
-      .names-main { font-size: 28px; }
-    }
-
-    .page-footer {
-      margin-top: auto;
-      padding-top: 12px;
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      color: #8a9a5e;
-      text-transform: uppercase;
       text-align: center;
     }
 
-    .verse-box {
-      background: rgba(92, 107, 53, 0.05);
-      border: 1px solid rgba(92, 107, 53, 0.2);
-      border-radius: 8px;
-      padding: 16px 14px;
+    /* ===== DECORATIVE BORDER (islamic geometric) ===== */
+    .frame {
+      position: absolute;
+      inset: 10px;
+      border: 1px solid var(--gold-soft);
+      border-radius: 3px;
+      pointer-events: none;
+    }
+
+    .frame::before,
+    .frame::after {
+      content: "";
+      position: absolute;
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--gold);
+      opacity: .9;
+    }
+
+    .frame::before {
+      top: -1px;
+      left: -1px;
+      border-right: none;
+      border-bottom: none;
+    }
+
+    .frame::after {
+      bottom: -1px;
+      right: -1px;
+      border-left: none;
+      border-top: none;
+    }
+
+    .corner {
+      position: absolute;
+      width: 46px;
+      height: 46px;
+      opacity: .85;
+    }
+
+    .corner svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: var(--gold);
+      stroke-width: 1.1;
+    }
+
+    .corner.tl {
+      top: 6px;
+      left: 6px;
+    }
+
+    .corner.tr {
+      top: 6px;
+      right: 6px;
+      transform: scaleX(-1);
+    }
+
+    .corner.bl {
+      bottom: 6px;
+      left: 6px;
+      transform: scaleY(-1);
+    }
+
+    .corner.br {
+      bottom: 6px;
+      right: 6px;
+      transform: scale(-1, -1);
+    }
+
+    .girih-strip {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 14px;
+      opacity: .55;
+    }
+
+    .girih-strip.top {
+      top: 0;
+    }
+
+    .girih-strip.bottom {
+      bottom: 0;
+      transform: scaleY(-1);
+    }
+
+    .girih-strip svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ===== CRESCENT + STAR ===== */
+    .crescent-emblem {
+      position: relative;
+      width: 84px;
+      height: 84px;
+      margin: 6px auto 10px;
+    }
+
+    .crescent-emblem svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .moon-glow {
+      filter: drop-shadow(0 0 10px rgba(201, 162, 90, .55));
+      animation: glow-pulse 3.6s ease-in-out infinite;
+    }
+
+    @keyframes glow-pulse {
+
+      0%,
+      100% {
+        filter: drop-shadow(0 0 6px rgba(201, 162, 90, .4));
+      }
+
+      50% {
+        filter: drop-shadow(0 0 16px rgba(201, 162, 90, .75));
+      }
+    }
+
+    .twinkle {
+      transform-origin: center;
+      animation: twinkle 2.4s ease-in-out infinite;
+    }
+
+    .twinkle.d1 {
+      animation-delay: .2s;
+    }
+
+    .twinkle.d2 {
+      animation-delay: .9s;
+    }
+
+    .twinkle.d3 {
+      animation-delay: 1.5s;
+    }
+
+    @keyframes twinkle {
+
+      0%,
+      100% {
+        opacity: .25;
+        transform: scale(.7);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.15);
+      }
+    }
+
+    /* ===== TYPE ===== */
+    .eyebrow {
+      font-family: 'Amiri', serif;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color: var(--olive);
+      margin: 2px 0 14px;
+    }
+
+    .arabic-line {
+      font-family: 'Scheherazade New', serif;
+      font-size: 22px;
+      color: var(--olive-deep);
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    h1.names {
+      font-family: 'Marcellus', serif;
+      font-size: 30px;
+      line-height: 1.25;
+      color: var(--olive-deep);
+      margin: 6px 0 2px;
+      letter-spacing: .01em;
+    }
+
+    .amp {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 20px;
+      color: var(--gold);
+      margin: 2px 0;
+    }
+
+    .sub {
+      font-size: 15px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--olive);
+      margin: 10px 0 4px;
+    }
+
+    .lead {
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--ink);
+      max-width: 340px;
+    }
+
+    .lead em {
+      color: var(--olive-deep);
+      font-style: italic;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 70%;
+      margin: 16px auto;
+      color: var(--gold);
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-soft), transparent);
+    }
+
+    .divider svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      fill: var(--gold);
+    }
+
+    /* ===== MUSIC TOGGLE ===== */
+    .music-toggle {
+      margin-top: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--gold-soft);
+      background: rgba(201, 162, 90, .08);
+      color: var(--olive-deep);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .25s ease, transform .2s ease;
+    }
+
+    .music-toggle:hover {
+      background: rgba(201, 162, 90, .18);
+      transform: translateY(-1px);
+    }
+
+    .music-toggle:active {
+      transform: translateY(0);
+    }
+
+    .music-toggle svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 14px;
+    }
+
+    .bars span {
+      width: 2.5px;
+      background: var(--gold);
+      border-radius: 1px;
+      animation: bar 1s ease-in-out infinite;
+      height: 5px;
+    }
+
+    .bars span:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .bars span:nth-child(2) {
+      animation-delay: .18s;
+    }
+
+    .bars span:nth-child(3) {
+      animation-delay: .36s;
+    }
+
+    .bars span:nth-child(4) {
+      animation-delay: .54s;
+    }
+
+    .bars.paused span {
+      animation-play-state: paused;
+      height: 3px;
+    }
+
+    @keyframes bar {
+
+      0%,
+      100% {
+        height: 4px;
+      }
+
+      50% {
+        height: 14px;
+      }
+    }
+
+    /* ===== PAGE 2 : invitation text ===== */
+    .verse-block {
+      background: rgba(92, 107, 53, .06);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 18px 16px;
+      margin: 14px 0;
+    }
+
+    .verse-arabic {
+      font-family: 'Scheherazade New', serif;
+      font-size: 20px;
+      color: var(--olive-deep);
+      line-height: 1.9;
+    }
+
+    .verse-trans {
+      font-size: 14.5px;
+      color: var(--olive);
+      margin-top: 8px;
+      line-height: 1.6;
+    }
+
+    .invite-line {
+      font-size: 16.5px;
+      line-height: 1.7;
+      margin: 8px 0;
+    }
+
+    .invite-names {
+      font-family: 'Marcellus', serif;
+      font-size: 22px;
+      color: var(--olive-deep);
+      margin: 10px 0;
+    }
+
+    /* ===== PAGE 3 : details ===== */
+    .detail-card {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 6px;
+    }
+
+    .detail-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      text-align: left;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, .5);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+    }
+
+    .detail-icon {
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(201, 162, 90, .18);
+    }
+
+    .detail-icon svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: var(--olive-deep);
+      stroke-width: 1.5;
+    }
+
+    .detail-text .label {
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--olive);
+      margin-bottom: 2px;
+    }
+
+    .detail-text .value {
+      font-size: 16.5px;
+      color: var(--ink);
+      line-height: 1.4;
+    }
+
+    .timeline {
+      width: 100%;
+      margin-top: 8px;
+      text-align: left;
+    }
+
+    .tl-item {
+      display: flex;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--line);
+      font-size: 15px;
+    }
+
+    .tl-item:last-child {
+      border-bottom: none;
+    }
+
+    .tl-time {
+      color: var(--gold);
+      font-weight: 600;
+      min-width: 54px;
+    }
+
+    /* ===== PAGE 4: location / closing ===== */
+    .map-frame {
+      width: 100%;
+      height: 130px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      background:
+        repeating-linear-gradient(45deg, rgba(92, 107, 53, .07) 0 8px, transparent 8px 16px),
+        var(--cream-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 14px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .map-frame svg {
+      width: 34px;
+      height: 34px;
+      fill: var(--olive-deep);
+    }
+
+    .closing-text {
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--ink);
+      margin: 10px 0 4px;
+    }
+
+    .signature {
+      font-family: 'Marcellus', serif;
+      color: var(--olive-deep);
+      margin-top: 14px;
+      font-size: 18px;
+    }
+
+    /* ===== NAV ===== */
+    .nav-dots {
+      display: flex;
+      gap: 8px;
+      margin-top: 18px;
+      justify-content: center;
+    }
+
+    .nav-dots button {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1px solid var(--gold-soft);
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .nav-dots button.active {
+      background: var(--gold);
+    }
+
+    .arrow-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid rgba(201, 162, 90, .5);
+      background: rgba(246, 242, 228, .9);
+      color: var(--olive-deep);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      z-index: 5;
+      transition: background .2s ease, transform .2s ease;
+    }
+
+    .arrow-btn:hover {
+      background: #fff;
+    }
+
+    .arrow-btn.prev {
+      left: -50px;
+    }
+
+    .arrow-btn.next {
+      right: -50px;
+    }
+
+    .arrow-btn[disabled] {
+      opacity: .25;
+      cursor: default;
+    }
+
+    .page-foot {
+      position: absolute;
+      bottom: 14px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 10.5px;
+      letter-spacing: .15em;
+      color: var(--olive-soft);
+      text-transform: uppercase;
+    }
+
+    @media (max-width:560px) {
+      .arrow-btn {
+        display: none;
+      }
+
+      .book {
+        max-width: 420px;
+      }
+    }
+
+    /* gentle floating stars on cover */
+    .float-star {
+      position: absolute;
+      color: var(--gold-soft);
+      opacity: .5;
+      animation: floaty 6s ease-in-out infinite;
+    }
+
+    @keyframes floaty {
+
+      0%,
+      100% {
+        transform: translateY(0);
+        opacity: .35;
+      }
+
+      50% {
+        transform: translateY(-8px);
+        opacity: .75;
+      }
+    }
+
+    .hint {
+      margin-top: 14px;
+      font-size: 12px;
+      color: rgba(246, 242, 228, .55);
+      letter-spacing: .05em;
+    }
+
+    /* ===== ENHANCED MOON ===== */
+    .crescent-emblem.large {
+      width: 140px;
+      height: 140px;
+      margin: 14px auto 12px;
+    }
+
+    @keyframes glow-pulse {
+
+      0%,
+      100% {
+        filter: drop-shadow(0 0 8px rgba(201, 162, 90, .45));
+      }
+
+      50% {
+        filter: drop-shadow(0 0 28px rgba(201, 162, 90, .95));
+      }
+    }
+
+    .twinkle.d4 {
+      animation-delay: .6s;
+    }
+
+    /* ===== COUNTDOWN ===== */
+    .countdown {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
       margin: 12px 0;
     }
 
-    .closing {
-      font-size: 16px;
-      line-height: 1.8;
-      color: #2c3318;
-      margin: 10px 0 4px;
-    }
-    .signature {
-      font-family: 'Marcellus', serif;
-      font-size: 20px;
-      color: #3c4a23;
-      margin-top: 16px;
+    .cd-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 50px;
+      background: rgba(255, 255, 255, .45);
+      border: 1px solid rgba(201, 162, 90, .35);
+      border-radius: 8px;
+      padding: 8px 6px 5px;
     }
 
-    /* scroll yo'q */
-    .page::-webkit-scrollbar { width: 0; }
+    .cd-num {
+      font-family: 'Marcellus', serif;
+      font-size: 22px;
+      line-height: 1;
+      color: var(--olive-deep);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .cd-lbl {
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--olive-soft);
+      margin-top: 3px;
+    }
+
+    /* ===== ACTION BUTTONS ===== */
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      width: 100%;
+      margin-top: 14px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-row .act-btn {
+      flex: 1;
+    }
+
+    .act-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 11px 14px;
+      border-radius: 999px;
+      border: 1px solid;
+      cursor: pointer;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13.5px;
+      letter-spacing: .06em;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+
+    .act-btn svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+
+    .act-btn:active {
+      transform: scale(.95) !important;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #c9a84c, #a87c28);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(201, 162, 90, .38);
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(201, 162, 90, .6);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, .5);
+      border-color: var(--gold-soft);
+      color: var(--olive-deep);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, .85);
+      transform: translateY(-1px);
+    }
+
+    .btn-whatsapp {
+      background: linear-gradient(135deg, #25d366, #1aab4e);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(37, 211, 102, .3);
+    }
+
+    .btn-whatsapp:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, .5);
+    }
+
+    .btn-call {
+      background: linear-gradient(135deg, #4f8ef0, #2563d4);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(79, 142, 240, .3);
+    }
+
+    .btn-call:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(79, 142, 240, .5);
+    }
+
+    .btn-gmap {
+      background: linear-gradient(135deg, #ea4335, #c0251a);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(234, 67, 53, .3);
+    }
+
+    .btn-gmap:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-ymap {
+      background: linear-gradient(135deg, #ffcc00, #e8a800);
+      border-color: transparent;
+      color: #1a1200;
+      box-shadow: 0 4px 12px rgba(255, 204, 0, .3);
+    }
+
+    .btn-ymap:hover {
+      transform: translateY(-2px);
+    }
+
+    .gift-note {
+      font-size: 12.5px;
+      color: var(--olive);
+      border: 1px dashed rgba(201, 162, 90, .4);
+      border-radius: 6px;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, .35);
+      margin-top: 10px;
+      line-height: 1.6;
+    }
   </style>
 </head>
+
 <body>
 
-<div class="book-container">
-  <div class="book">
-    <button class="arrow-nav prev" id="prevBtn" aria-label="Oldingi">❮</button>
-    <button class="arrow-nav next" id="nextBtn" aria-label="Keyingi">❯</button>
+  <div class="book-wrap">
+    <div class="book">
+      <button class="arrow-btn prev" id="prevBtn" aria-label="Oldingi sahifa">&#10094;</button>
+      <button class="arrow-btn next" id="nextBtn" aria-label="Keyingi sahifa">&#10095;</button>
 
-    <div class="pages">
+      <div class="pages" id="pages">
 
-      <!-- === SAHIFA 1: MUQOVA === -->
-      <section class="page active" data-page="0">
-        <div class="frame-ornament"></div>
-        <div class="corner-svg tl"><svg viewBox="0 0 48 48"><path d="M4 24 V10 a6 6 0 0 1 6-6 H24"/><path d="M4 16 a14 14 0 0 1 14-14"/></svg></div>
-        <div class="corner-svg tr"><svg viewBox="0 0 48 48"><path d="M4 24 V10 a6 6 0 0 1 6-6 H24"/><path d="M4 16 a14 14 0 0 1 14-14"/></svg></div>
-        <div class="corner-svg bl"><svg viewBox="0 0 48 48"><path d="M4 24 V10 a6 6 0 0 1 6-6 H24"/><path d="M4 16 a14 14 0 0 1 14-14"/></svg></div>
-        <div class="corner-svg br"><svg viewBox="0 0 48 48"><path d="M4 24 V10 a6 6 0 0 1 6-6 H24"/><path d="M4 16 a14 14 0 0 1 14-14"/></svg></div>
+        <!-- PAGE 1 — COVER -->
+        <section class="page active" data-page="0">
+          <div class="page-inner">
+            <div class="frame"></div>
+            <div class="corner tl"><svg viewBox="0 0 46 46">
+                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
+                <path d="M2 16 a14 14 0 0 1 14-14" />
+              </svg></div>
+            <div class="corner tr"><svg viewBox="0 0 46 46">
+                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
+                <path d="M2 16 a14 14 0 0 1 14-14" />
+              </svg></div>
+            <div class="corner bl"><svg viewBox="0 0 46 46">
+                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
+                <path d="M2 16 a14 14 0 0 1 14-14" />
+              </svg></div>
+            <div class="corner br"><svg viewBox="0 0 46 46">
+                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
+                <path d="M2 16 a14 14 0 0 1 14-14" />
+              </svg></div>
 
-        <svg class="star-float" style="top:48px;left:28px;width:10px;" viewBox="0 0 24 24"><path d="M12 0l2.5 8.5L23 11l-8.5 2.5L12 22l-2.5-8.5L1 11l8.5-2.5z"/></svg>
-        <svg class="star-float" style="top:90px;right:34px;width:7px;animation-delay:1.8s;" viewBox="0 0 24 24"><path d="M12 0l2.5 8.5L23 11l-8.5 2.5L12 22l-2.5-8.5L1 11l8.5-2.5z"/></svg>
-        <svg class="star-float" style="bottom:100px;left:40px;width:6px;animation-delay:3.2s;" viewBox="0 0 24 24"><path d="M12 0l2.5 8.5L23 11l-8.5 2.5L12 22l-2.5-8.5L1 11l8.5-2.5z"/></svg>
-
-        <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-
-          <div class="moon-badge">
-            <svg viewBox="0 0 100 100">
-              <path d="M58 8 A42 42 0 1 0 58 92 A34 34 0 1 1 58 8 Z" fill="#c9a25a"/>
-              <polygon class="twinkle-star" points="74,16 76.4,21.6 82,22.6 78,26.8 79,32.6 74,29.8 69,32.6 70,26.8 66,22.6 71.6,21.6" fill="#c9a25a"/>
-              <polygon class="twinkle-star" points="86,40 87.4,43.2 91,43.8 88.5,46.4 89.1,50 86,48.3 82.9,50 83.5,46.4 81,43.8 84.6,43.2" fill="#c9a25a"/>
-              <polygon class="twinkle-star" points="18,60 19.1,62.6 22,63 19.9,65 20.4,68 18,66.6 15.6,68 16.1,65 14,63 16.9,62.6" fill="#c9a25a"/>
+            <svg class="float-star" style="top:54px;left:36px;width:8px;" viewBox="0 0 24 24">
+              <path d="M12 0l2.5 8.5L23 11l-8.5 2.5L12 22l-2.5-8.5L1 11l8.5-2.5z" />
             </svg>
-          </div>
+            <svg class="float-star" style="top:90px;right:40px;width:6px;animation-delay:1.4s;" viewBox="0 0 24 24">
+              <path d="M12 0l2.5 8.5L23 11l-8.5 2.5L12 22l-2.5-8.5L1 11l8.5-2.5z" />
+            </svg>
+            <svg class="float-star" style="top:130px;left:60px;width:5px;animation-delay:2.6s;" viewBox="0 0 24 24">
+              <path d="M12 0l2.5 8.5L23 11l-8.5 2.5L12 22l-2.5-8.5L1 11l8.5-2.5z" />
+            </svg>
 
-          <div class="eyebrow">بِسْمِ ٱللّٰهِ ٱلرَّحْمٰنِ ٱلرَّحِيمِ</div>
-          <div class="eyebrow" style="margin-top:-2px;">Assalamu alaykum!</div>
+            <div style="margin-top:30px;">
+              <div class="crescent-emblem large moon-glow">
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                  <!-- outer glow rings -->
+                  <circle cx="100" cy="100" r="94" fill="none" stroke="rgba(201,162,90,.12)" stroke-width="1.5" />
+                  <circle cx="100" cy="100" r="84" fill="none" stroke="rgba(201,162,90,.07)" stroke-width="1" />
+                  <!-- geometric ring dots -->
+                  <g fill="rgba(201,162,90,.45)">
+                    <circle cx="100" cy="8" r="2" />
+                    <circle cx="100" cy="192" r="2" />
+                    <circle cx="8" cy="100" r="2" />
+                    <circle cx="192" cy="100" r="2" />
+                    <circle cx="35" cy="35" r="1.5" />
+                    <circle cx="165" cy="35" r="1.5" />
+                    <circle cx="35" cy="165" r="1.5" />
+                    <circle cx="165" cy="165" r="1.5" />
+                  </g>
+                  <!-- crescent body -->
+                  <path d="M115 36 A64 64 0 1 0 115 164 A50 50 0 1 1 115 36 Z" fill="#c9a25a" />
+                  <!-- inner shimmer -->
+                  <path d="M115 36 A64 64 0 1 0 115 164 A50 50 0 1 1 115 36 Z" fill="url(#moonShimmer)" />
+                  <!-- main star beside crescent -->
+                  <polygon class="twinkle d1"
+                    points="152,50 155.4,60.8 166.8,60.8 157.7,67.6 161.1,78.4 152,71.6 142.9,78.4 146.3,67.6 137.2,60.8 148.6,60.8"
+                    fill="#c9a25a" />
+                  <!-- accent stars -->
+                  <polygon class="twinkle d2"
+                    points="174,100 175.6,104.9 180.8,104.9 176.6,107.8 178.2,112.7 174,109.8 169.8,112.7 171.4,107.8 167.2,104.9 172.4,104.9"
+                    fill="#e8c070" />
+                  <polygon class="twinkle d3"
+                    points="140,38 141.3,42 145.5,42 142.1,44.4 143.4,48.4 140,46 136.6,48.4 137.9,44.4 134.5,42 138.7,42"
+                    fill="#e8c070" />
+                  <polygon class="twinkle d4"
+                    points="30,80 31,83.4 34.5,83.4 31.8,85.4 32.8,88.8 30,86.8 27.2,88.8 28.2,85.4 25.5,83.4 29,83.4"
+                    fill="#c9a25a" opacity=".6" />
+                  <polygon class="twinkle d1"
+                    points="50,140 51,143 54,143 51.6,144.8 52.6,147.8 50,146 47.4,147.8 48.4,144.8 46,143 49,143"
+                    fill="#c9a25a" opacity=".5" />
+                  <defs>
+                    <linearGradient id="moonShimmer" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stop-color="#fff8e0" stop-opacity=".3" />
+                      <stop offset="0.5" stop-color="#c9a25a" stop-opacity="0" />
+                      <stop offset="1" stop-color="#7a5010" stop-opacity=".18" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
 
-          <div class="names-main">Raximjon</div>
-          <span class="ampersand">&#10086;</span>
-          <div class="names-main">Charos</div>
+              <div class="eyebrow">بِسْمِ ٱللّٰهِ ٱلرَّحْمٰنِ ٱلرَّحِيمِ</div>
 
-          <div class="divider-gold">
-            <svg viewBox="0 0 24 24"><path d="M12 0l2.5 8.5L23 11l-8.5 2.5L12 22l-2.5-8.5L1 11l8.5-2.5z"/></svg>
-          </div>
+              <div class="eyebrow">Assalamu alaykum!</div>
 
-          <div class="subhead">Yangi hayot sahifasi ochilmoqda</div>
+              <!-- <h1 id="guest-name">Hurmatli Mehmon</h1> -->
 
-          <div class="music-wrap" id="musicToggle">
-            <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-            <span id="musicLabel">Musiqani tinglang</span>
-            <span class="bars paused" id="bars"><span></span><span></span><span></span><span></span></span>
-          </div>
-          <audio id="bgAudio" loop preload="none"><source src="wedding.mp3" type="audio/mpeg"></audio>
-        </div>
+              <div class="divider">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 0l2.5 8.5L23 11l-8.5 2.5L12 22l-2.5-8.5L1 11l8.5-2.5z" />
+                </svg>
+              </div>
 
-        <div class="page-footer">1 / 4</div>
-      </section>
+              <div class="sub">Nikoh to'yi · 01.08.2026</div>
 
-      <!-- === SAHIFA 2: TAKLIF === -->
-      <section class="page" data-page="1">
-        <div class="frame-ornament"></div>
-        <div class="corner-svg tl"><svg viewBox="0 0 48 48"><path d="M4 24 V10 a6 6 0 0 1 6-6 H24"/><path d="M4 16 a14 14 0 0 1 14-14"/></svg></div>
-        <div class="corner-svg tr"><svg viewBox="0 0 48 48"><path d="M4 24 V10 a6 6 0 0 1 6-6 H24"/><path d="M4 16 a14 14 0 0 1 14-14"/></svg></div>
-        <div class="corner-svg bl"><svg viewBox="0 0 48 48"><path d="M4 24 V10 a6 6 0 0 1 6-6 H24"/><path d="M4 16 a14 14 0 0 1 14-14"/></svg></div>
-        <div class="corner-svg br"><svg viewBox="0 0 48 48"><path d="M4 24 V10 a6 6 0 0 1 6-6 H24"/><path d="M4 16 a14 14 0 0 1 14-14"/></svg></div>
+              <!-- countdown -->
+              <div class="countdown">
+                <div class="cd-unit"><span class="cd-num" id="cd-d">--</span><span class="cd-lbl">Kun</span></div>
+                <div class="cd-unit"><span class="cd-num" id="cd-h">--</span><span class="cd-lbl">Soat</span></div>
+                <div class="cd-unit"><span class="cd-num" id="cd-m">--</span><span class="cd-lbl">Daqiqa</span></div>
+                <div class="cd-unit"><span class="cd-num" id="cd-s">--</span><span class="cd-lbl">Soniya</span></div>
+              </div>
 
-        <div style="flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; padding-top:10px;">
-          <div style="width:50px; height:50px; margin-bottom:6px;">
-            <svg viewBox="0 0 100 100"><path d="M58 8 A42 42 0 1 0 58 92 A34 34 0 1 1 58 8 Z" fill="#c9a25a"/></svg>
-          </div>
+              <button class="music-toggle" id="musicToggle" type="button">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 18V5l12-2v13" />
+                  <circle cx="6" cy="18" r="3" />
+                  <circle cx="18" cy="16" r="3" />
+                </svg>
+                <span id="musicLabel">Tinglash uchun bosing.</span>
+                <span class="bars paused" id="bars"><span></span><span></span><span></span><span></span></span>
+              </button>
+              <audio id="bgAudio" loop preload="none">
+                <source src="wedding.mp3" type="audio/mpeg">
+              </audio>
 
-          <div class="verse-box" style="max-width:320px;">
-            <div style="font-family:'Scheherazade New',serif; font-size:21px; color:#3c4a23;">﴿ وَجَعَلْنَا بَيْنَهُم مَّوَدَّةً وَرَحْمَةً ﴾</div>
-            <div style="font-size:14px; color:#5c6b35; margin-top:6px;">"Ular orasiga mehr va rahmat qo‘ydik"</div>
-          </div>
-
-          <div style="font-family:'Marcellus',serif; font-size:26px; color:#2c3318; margin:8px 0 4px;">Raximjon &amp; Charos</div>
-          <p class="invite-text">Nikoh to'yimizni nishonlash baxtiga <em>sizni ham</em> yonimizda ko'rishni istaymiz.</p>
-
-          <div class="divider-gold" style="margin:14px auto;">
-            <svg viewBox="0 0 24 24"><path d="M12 0l2.5 8.5L23 11l-8.5 2.5L12 22l-2.5-8.5L1 11l8.5-2.5z"/></svg>
-          </div>
-
-          <p style="font-size:16px; color:#5c6b35; max-width:280px;">Sizning tashrifingiz – biz uchun eng katta sovg‘a.</p>
-        </div>
-        <div class="page-footer">2 / 4</div>
-      </section>
-
-      <!-- === SAHIFA 3: MA'LUMOTLAR === -->
-      <section class="page" data-page="2">
-        <div class="frame-ornament"></div>
-        <div class="corner-svg tl"><svg viewBox="0 0 48 48"><path d="M4 24 V10 a6 6 0 0 1 6-6 H24"/><path d="M4 16 a14 14 0 0 1 14-14"/></svg></div>
-        <div class="corner-svg tr"><svg viewBox="0 0 48 48"><path d="M4 24 V10 a6 6 0 0 1 6-6 H24"/><path d="M4 16 a14 14 0 0 1 14-14"/></svg></div>
-        <div class="corner-svg bl"><svg viewBox="0 0 48 48"><path d="M4 24 V10 a6 6 0 0 1 6-6 H24"/><path d="M4 16 a14 14 0 0 1 14-14"/></svg></div>
-        <div class="corner-svg br"><svg viewBox="0 0 48 48"><path d="M4 24 V10 a6 6 0 0 1 6-6 H24"/><path d="M4 16 a14 14 0 0 1 14-14"/></svg></div>
-
-        <div style="flex:1; display:flex; flex-direction:column; align-items:center; padding-top:6px;">
-          <div class="eyebrow" style="margin-bottom:2px;">Marosim tafsilotlari</div>
-          <div style="font-family:'Marcellus',serif; font-size:26px; color:#2c3318;">To'y dasturi</div>
-
-          <div class="detail-grid">
-            <div class="detail-item">
-              <div class="detail-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></div>
-              <div><div class="detail-label">Sana</div><div class="detail-value">01-avgust 2026</div></div>
+              <!-- quick actions on cover -->
+              <div class="actions" style="margin-top:10px;">
+                <a href="https://wa.me/998901234567?text=Assalamu+alaykum!+Men+to%27yga+kelaman,+inshaAlloh!"
+                  target="_blank" class="act-btn btn-whatsapp">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.979-1.418A9.956 9.956 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.7 0-3.29-.454-4.659-1.243l-.333-.198-3.46.985.944-3.555-.216-.347A7.955 7.955 0 0 1 4 12c0-4.418 3.582-8 8-8s8 3.582 8 8-3.582 8-8 8z" />
+                  </svg>
+                  Kelishimni tasdiqlash
+                </a>
+                <div class="btn-row">
+                  <a href="tel:+998901234567" class="act-btn btn-call">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                      <path
+                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                    Qo'ng'iroq
+                  </a>
+                  <button class="act-btn btn-ghost" id="shareBtn" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                      <circle cx="18" cy="5" r="3" />
+                      <circle cx="6" cy="12" r="3" />
+                      <circle cx="18" cy="19" r="3" />
+                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                    </svg>
+                    Ulashish
+                  </button>
+                </div>
+              </div>
             </div>
-            <div class="detail-item">
-              <div class="detail-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
-              <div><div class="detail-label">Vaqt</div><div class="detail-value">soat 19:00</div></div>
+            <div class="page-foot" style="bottom:32px;">
+              Yonga suring →
             </div>
-            <div class="detail-item">
-              <div class="detail-icon"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div>
-              <div><div class="detail-label">Manzil</div><div class="detail-value">AslNur to'yxonasi, Xatirchi</div></div>
+
+            <div class="page-foot">1 / 4</div>
+          </div>
+        </section>
+
+        <!-- PAGE 2 — INVITATION -->
+        <section class="page" data-page="1">
+          <div class="page-inner">
+            <div class="frame"></div>
+            <div class="corner tl"><svg viewBox="0 0 46 46">
+                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
+                <path d="M2 16 a14 14 0 0 1 14-14" />
+              </svg></div>
+            <div class="corner tr"><svg viewBox="0 0 46 46">
+                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
+                <path d="M2 16 a14 14 0 0 1 14-14" />
+              </svg></div>
+            <div class="corner bl"><svg viewBox="0 0 46 46">
+                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
+                <path d="M2 16 a14 14 0 0 1 14-14" />
+              </svg></div>
+            <div class="corner br"><svg viewBox="0 0 46 46">
+                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
+                <path d="M2 16 a14 14 0 0 1 14-14" />
+              </svg></div>
+
+            <div style="margin-top:34px;">
+              <div class="crescent-emblem" style="width:48px;height:48px;">
+                <svg viewBox="0 0 100 100">
+                  <path d="M58 8 A42 42 0 1 0 58 92 A34 34 0 1 1 58 8 Z" fill="#c9a25a" />
+                </svg>
+              </div>
+
+              <div class="verse-block">
+                <div class="verse-trans">"...Allohning hikmati ila ular bir-biri uchun yaratilgan..."</div>
+              </div>
+
+              <!-- <p class="invite-line">Allohning irodasi va inoyati bilan</p> -->
+              <div class="invite-names">Raximjon &amp; Charos</div>
+              <p class="invite-line">Nikoh to'yini nishonlamoqchimiz va shu <em>quvonchli kunimizda</em> sizni ham
+                yonimizda ko'rishni niyat qilganmiz.</p>
+
+              <div class="divider">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 0l2.5 8.5L23 11l-8.5 2.5L12 22l-2.5-8.5L1 11l8.5-2.5z" />
+                </svg>
+              </div>
+
+              <p class="invite-line" style="font-size:15px;color:var(--olive);">Sizning tashrifingiz biz uchun eng katta
+                sovg'a bo'ladi.</p>
             </div>
+
+            <div class="page-foot">2 / 4</div>
           </div>
+        </section>
 
-          <div class="divider-gold" style="margin:12px auto 6px;">
-            <svg viewBox="0 0 24 24"><path d="M12 0l2.5 8.5L23 11l-8.5 2.5L12 22l-2.5-8.5L1 11l8.5-2.5z"/></svg>
+        <!-- PAGE 3 — DETAILS / PROGRAM -->
+        <section class="page" data-page="2">
+          <div class="page-inner">
+            <div class="frame"></div>
+            <div class="corner tl"><svg viewBox="0 0 46 46">
+                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
+                <path d="M2 16 a14 14 0 0 1 14-14" />
+              </svg></div>
+            <div class="corner tr"><svg viewBox="0 0 46 46">
+                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
+                <path d="M2 16 a14 14 0 0 1 14-14" />
+              </svg></div>
+            <div class="corner bl"><svg viewBox="0 0 46 46">
+                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
+                <path d="M2 16 a14 14 0 0 1 14-14" />
+              </svg></div>
+            <div class="corner br"><svg viewBox="0 0 46 46">
+                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
+                <path d="M2 16 a14 14 0 0 1 14-14" />
+              </svg></div>
+
+            <div style="margin-top:30px; width:100%;">
+              <div class="eyebrow" style="margin-bottom:6px;">Marosim tafsilotlari</div>
+              <h1 class="names" style="font-size:24px;">To'y dasturi</h1>
+
+              <div class="detail-card">
+                <div class="detail-row">
+                  <div class="detail-icon"><svg viewBox="0 0 24 24">
+                      <rect x="3" y="5" width="18" height="16" rx="2" />
+                      <path d="M3 10h18M8 3v4M16 3v4" />
+                    </svg></div>
+                  <div class="detail-text">
+                    <div class="label">Sana</div>
+                    <div class="value">01-avgust 2026-yil</div>
+                  </div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-icon"><svg viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M12 7v5l3 2" />
+                    </svg></div>
+                  <div class="detail-text">
+                    <div class="label">Vaqt</div>
+                    <div class="value">soat 19:00 da</div>
+                  </div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-icon"><svg viewBox="0 0 24 24">
+                      <path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z" />
+                      <circle cx="12" cy="10" r="2.5" />
+                    </svg></div>
+                  <div class="detail-text">
+                    <div class="label">Manzil</div>
+                    <div class="value">AslNur to'yxonasi, Xatirchi tumani</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="divider" style="margin:18px auto 8px;">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 0l2.5 8.5L23 11l-8.5 2.5L12 22l-2.5-8.5L1 11l8.5-2.5z" />
+                </svg>
+              </div>
+
+              <div class="timeline">
+                <div class="tl-item"><span class="tl-time">___</span><span>Mehmonlarni kutib olish</span></div>
+                <div class="tl-item"><span class="tl-time">___</span><span>Nikoh marosimi</span></div>
+                <div class="tl-item"><span class="tl-time">___</span><span>Kelin-kuyov sharafiga tabriklar</span></div>
+                <div class="tl-item"><span class="tl-time">___</span><span>To'y dasturi va ziyofat</span></div>
+              </div>
+            </div>
+
+            <div class="page-foot">3 / 4</div>
           </div>
+        </section>
 
-          <div class="timeline" style="max-width:340px;">
-            <div class="tl-row"><span class="tl-time">___</span><span>Mehmonlarni kutib olish</span></div>
-            <div class="tl-row"><span class="tl-time">___</span><span>Nikoh marosimi</span></div>
-            <div class="tl-row"><span class="tl-time">___</span><span>Tabriklar va fotosessiya</span></div>
-            <div class="tl-row"><span class="tl-time">___</span><span>Ziyofat dasturi</span></div>
+        <!-- PAGE 4 — LOCATION / CLOSING -->
+        <section class="page" data-page="3">
+          <div class="page-inner">
+            <div class="frame"></div>
+            <div class="corner tl"><svg viewBox="0 0 46 46">
+                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
+                <path d="M2 16 a14 14 0 0 1 14-14" />
+              </svg></div>
+            <div class="corner tr"><svg viewBox="0 0 46 46">
+                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
+                <path d="M2 16 a14 14 0 0 1 14-14" />
+              </svg></div>
+            <div class="corner bl"><svg viewBox="0 0 46 46">
+                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
+                <path d="M2 16 a14 14 0 0 1 14-14" />
+              </svg></div>
+            <div class="corner br"><svg viewBox="0 0 46 46">
+                <path d="M2 24 V8 a6 6 0 0 1 6-6 H24" />
+                <path d="M2 16 a14 14 0 0 1 14-14" />
+              </svg></div>
+
+            <div style="margin-top:34px; width:100%;">
+              <div class="crescent-emblem" style="width:48px;height:48px;">
+                <svg viewBox="0 0 100 100">
+                  <path d="M58 8 A42 42 0 1 0 58 92 A34 34 0 1 1 58 8 Z" fill="#c9a25a" />
+                </svg>
+              </div>
+
+              <div class="eyebrow">Manzil</div>
+              <div class="actions" style="margin:16px 0;">
+                <div class="btn-row">
+                  <a href="https://www.google.com/maps/place/AsilNur+to'yxonasi/@40.034806,65.9600723,20.69z/data=!4m6!3m5!1s0x3f52075933923451:0x92cb172a1020f60!8m2!3d40.0347879!4d65.9600419!16s%2Fg%2F11s9tqn6gx?entry=ttu"
+                    target="_blank" class="act-btn btn-gmap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                      <path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z" />
+                      <circle cx="12" cy="10" r="2.5" />
+                    </svg>
+                    Google Maps
+                  </a>
+                  <a href="https://yandex.uz/maps/195383/yangirabod/?ll=65.960035%2C40.034879&mode=whatshere&whatshere%5Bpoint%5D=65.959816%2C40.034931&whatshere%5Bzoom%5D=21&z=21"
+                    target="_blank" class="act-btn btn-ymap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                      <path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z" />
+                      <circle cx="12" cy="10" r="2.5" />
+                    </svg>
+                    Yandex Maps
+                  </a>
+                </div>
+                <button class="act-btn btn-gold" id="calBtn" type="button" style="width:100%;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <rect x="3" y="5" width="18" height="16" rx="2" />
+                    <path d="M3 10h18M8 3v4M16 3v4" />
+                  </svg>
+                  Kalendarga qo'shish
+                </button>
+                <div class="btn-row">
+                  <a href="tel:+998901234567" class="act-btn btn-call">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                      <path
+                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                    Qo'ng'iroq
+                  </a>
+                  <a href="https://wa.me/998901234567?text=Assalamu+alaykum!+Men+to%27yga+kelaman,+inshaAlloh!"
+                    target="_blank" class="act-btn btn-whatsapp">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.979-1.418A9.956 9.956 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.7 0-3.29-.454-4.659-1.243l-.333-.198-3.46.985.944-3.555-.216-.347A7.955 7.955 0 0 1 4 12c0-4.418 3.582-8 8-8s8 3.582 8 8-3.582 8-8 8z" />
+                    </svg>
+                    WhatsApp
+                  </a>
+                </div>
+              </div>
+
+              <div class="divider">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 0l2.5 8.5L23 11l-8.5 2.5L12 22l-2.5-8.5L1 11l8.5-2.5z" />
+                </svg>
+              </div>
+
+              <p class="closing-text">Albatta tashrif buyurib, baxtimizga sherik bo'lishingizni va duoyi xayringizni
+                ayamasligingizni so'raymiz.</p>
+              <p class="closing-text" style="font-size:14px;color:var(--olive);">Sizni kutib qolamiz!</p>
+
+              <div class="gift-note">🌿 Xudoga shukur, barcha narsadan baxramandmiz. Faqat duoingiz bizga yetarli.</div>
+
+              <div class="signature">Ro'ziyevlar &amp; Qurbonovlar oilasi</div>
+            </div>
+
+            <div class="page-foot">4 / 4</div>
           </div>
-        </div>
-        <div class="page-footer">3 / 4</div>
-      </section>
+        </section>
 
-      <!-- === SAHIFA 4: MANZIL, YAKUN === -->
-      <section class="page" data-page="3">
-        <div class="frame-ornament"></div>
-        <div class="corner-svg tl"><svg viewBox="0 0 48 48"><path d="M4 24 V10 a6 6 0 0 1 6-6 H24"/><path d="M4 16 a14 14 0 0 1 14-14"/></svg></div>
-        <div class="corner-svg tr"><svg viewBox="0 0 48 48"><path d="M4 24 V10 a6 6 0 0 1 6-6 H24"/><path d="M4 16 a14 14 0 0 1 14-14"/></svg></div>
-        <div class="corner-svg bl"><svg viewBox="0 0 48 48"><path d="M4 24 V10 a6 6 0 0 1 6-6 H24"/><path d="M4 16 a14 14 0 0 1 14-14"/></svg></div>
-        <div class="corner-svg br"><svg viewBox="0 0 48 48"><path d="M4 24 V10 a6 6 0 0 1 6-6 H24"/><path d="M4 16 a14 14 0 0 1 14-14"/></svg></div>
+      </div>
+    </div>
 
-        <div style="flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; padding-top:8px;">
-          <div style="width:54px; height:54px; margin-bottom:4px;">
-            <svg viewBox="0 0 100 100"><path d="M58 8 A42 42 0 1 0 58 92 A34 34 0 1 1 58 8 Z" fill="#c9a25a"/></svg>
-          </div>
+    <div class="nav-dots" id="navDots"></div>
+    <div class="hint">Sahifalarni varaqlash uchun o'qlardan yoki nuqtalardan foydalaning</div>
+  </div>
 
-          <div class="eyebrow">Manzil</div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const guest = params.get("guest");
 
-          <div style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:16px 0 10px;">
-            <a href="https://www.google.com/maps/place/AsilNur+to'yxonasi/@40.034806,65.9600723,20.69z/data=!4m6!3m5!1s0x3f52075933923451:0x92cb172a1020f60!8m2!3d40.0347879!4d65.9600419!16s%2Fg%2F11s9tqn6gx?entry=ttu" target="_blank" class="btn-map google">📍 Google Maps</a>
-            <a href="https://yandex.uz/maps/195383/yangirabod/?ll=65.960035%2C40.034879&mode=whatshere&whatshere%5Bpoint%5D=65.959816%2C40.034931&whatshere%5Bzoom%5D=21&z=21" target="_blank" class="btn-map yandex">📍 Yandex Maps</a>
-          </div>
+    if (guest) {
+      const guestName = decodeURIComponent(guest);
+      const el = document.getElementById("guest-name");
+      if (el) {
+        el.textContent = guestName;
+      }
+    }
+  </script>
 
-          <div class="divider-gold" style="margin:6px auto;">
-            <svg viewBox="0 0 24 24"><path d="M12 0l2.5 8.5L23 11l-8.5 2.5L12 22l-2.5-8.5L1 11l8.5-2.5z"/></svg>
-          </div>
-
-          <p class="closing">Bizni bu baxtli kunda duo va tabriklaringiz bilan yolg'iz qoldirmang.</p>
-          <p style="font-size:15px; color:#5c6b35;">Sizni kutib qolamiz!</p>
-
-          <div class="signature">Ro'ziyevlar &amp; Qurbonovlar oilasi</div>
-        </div>
-        <div class="page-footer">4 / 4</div>
-      </section>
-
-    </div><!-- .pages -->
-  </div><!-- .book -->
-
-  <!-- navigatsiya nuqtalari -->
-  <div class="nav-dots" id="navDots"></div>
-  <div style="text-align:center; margin-top:12px; color:rgba(246,242,228,0.4); font-size:12px; letter-spacing:0.06em;">Sahifalarni oʻqlar yoki nuqtalar yordamida varaqlang</div>
-</div>
-
-<script>
-  (function(){
+  <script>
     const pages = Array.from(document.querySelectorAll('.page'));
     const dotsWrap = document.getElementById('navDots');
     let current = 0;
 
-    // nuqtalar
     pages.forEach((_, i) => {
       const dot = document.createElement('button');
       if (i === 0) dot.classList.add('active');
@@ -584,8 +1284,8 @@
       current = i;
       pages[current].classList.add('active');
       dots[current].classList.add('active');
-      document.getElementById('prevBtn').disabled = (current === 0);
-      document.getElementById('nextBtn').disabled = (current === pages.length - 1);
+      document.getElementById('prevBtn').disabled = current === 0;
+      document.getElementById('nextBtn').disabled = current === pages.length - 1;
     }
 
     document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
@@ -597,19 +1297,18 @@
       if (e.key === 'ArrowLeft') goTo(current - 1);
     });
 
-    // surish
+    // swipe support
     let touchX = null;
-    const bookEl = document.querySelector('.book');
-    bookEl.addEventListener('touchstart', e => touchX = e.touches[0].clientX);
-    bookEl.addEventListener('touchend', e => {
+    document.querySelector('.book').addEventListener('touchstart', e => touchX = e.touches[0].clientX);
+    document.querySelector('.book').addEventListener('touchend', e => {
       if (touchX === null) return;
       const dx = e.changedTouches[0].clientX - touchX;
-      if (dx > 45) goTo(current - 1);
-      if (dx < -45) goTo(current + 1);
+      if (dx > 50) goTo(current - 1);
+      if (dx < -50) goTo(current + 1);
       touchX = null;
     });
 
-    // musiqa
+    // music toggle
     const audio = document.getElementById('bgAudio');
     const musicBtn = document.getElementById('musicToggle');
     const musicLabel = document.getElementById('musicLabel');
@@ -620,26 +1319,61 @@
       if (!playing) {
         audio.play().then(() => {
           playing = true;
-          musicLabel.textContent = 'Musiqa ijroda';
+          musicLabel.textContent = 'Musiqa ijro etilmoqda';
           bars.classList.remove('paused');
         }).catch(() => {
-          musicLabel.textContent = 'Qayta urining';
+          musicLabel.textContent = 'Qayta urinib ko\'ring';
         });
       } else {
         audio.pause();
         playing = false;
-        musicLabel.textContent = 'Musiqani tinglang';
+        musicLabel.textContent = 'Musiqani tinglash';
         bars.classList.add('paused');
       }
     });
 
     audio.addEventListener('ended', () => {
       playing = false;
-      musicLabel.textContent = 'Musiqani tinglang';
+      musicLabel.textContent = 'Musiqani tinglash';
       bars.classList.add('paused');
     });
-  })();
-</script>
 
+    // ── COUNTDOWN ──
+    function updateCountdown() {
+      const target = new Date('2026-08-01T19:00:00');
+      const now = new Date();
+      let diff = Math.max(0, target - now);
+      const d = Math.floor(diff / 864e5); diff -= d * 864e5;
+      const h = Math.floor(diff / 36e5); diff -= h * 36e5;
+      const m = Math.floor(diff / 6e4); diff -= m * 6e4;
+      const s = Math.floor(diff / 1e3);
+      document.getElementById('cd-d').textContent = String(d).padStart(2, '0');
+      document.getElementById('cd-h').textContent = String(h).padStart(2, '0');
+      document.getElementById('cd-m').textContent = String(m).padStart(2, '0');
+      document.getElementById('cd-s').textContent = String(s).padStart(2, '0');
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // ── ADD TO CALENDAR ──
+    document.getElementById('calBtn').addEventListener('click', () => {
+      const title = encodeURIComponent("Raximjon & Charos - Nikoh to'yi");
+      const loc = encodeURIComponent("AslNur to'yxonasi, Xatirchi tumani");
+      const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20260801T190000/20260801T220000&location=${loc}`;
+      window.open(url, '_blank');
+    });
+
+    // ── SHARE ──
+    document.getElementById('shareBtn').addEventListener('click', async () => {
+      if (navigator.share) {
+        try { await navigator.share({ title: "Raximjon & Charos nikoh to'yi", text: "Sizi to'yimizga taklif etamiz!", url: location.href }); }
+        catch { }
+      } else {
+        try { await navigator.clipboard.writeText(location.href); } catch { }
+        alert('Havola nusxalandi!');
+      }
+    });
+  </script>
 </body>
+
 </html>
