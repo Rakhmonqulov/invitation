@@ -1177,6 +1177,22 @@
   </div>
 
   <script>
+    console.log(window.location.search);
+
+    const params = new URLSearchParams(window.location.search);
+    const guest = params.get("guest");
+
+    console.log(guest);
+
+    if (guest) {
+      const el = document.getElementById("guest-name");
+      console.log(el);
+
+      if (el) {
+        el.textContent = guest;
+      }
+    }
+
     const pages = Array.from(document.querySelectorAll('.page'));
     const dotsWrap = document.getElementById('navDots');
     let current = 0;
@@ -1277,13 +1293,22 @@
 
     // ── SHARE ──
     document.getElementById('shareBtn').addEventListener('click', async () => {
+
+      const url = "https://glittery-tarsier-c64b9e.netlify.app/";
+
       if (navigator.share) {
-        try { await navigator.share({ title: "Raximjon & Charos nikoh to'yi", text: "Sizi to'yimizga taklif etamiz!", url: location.href }); }
-        catch { }
+        try {
+          await navigator.share({
+            title: "To'y taklifnomasi",
+            text: "Sizni to'yimizga taklif etamiz!",
+            url: url
+          });
+        } catch (e) { }
       } else {
-        try { await navigator.clipboard.writeText(location.href); } catch { }
-        alert('Havola nusxalandi!');
+        await navigator.clipboard.writeText(url);
+        alert("Havola nusxalandi!");
       }
+
     });
   </script>
 </body>
